@@ -1,0 +1,12 @@
+<html>
+  <head>
+  {{#response.files.append(URL('static','css/twitter.css'))}} 
+  {{response.files.append(URL('static','css/bootstrap.min.css'))}}
+  {{response.files.append(URL('static','js/bootstrap.min.js'))}}
+  {{include 'web2py_ajax.html'}}
+  </head>
+  <body>
+  <div class="hero-unit">
+  </div>
+  </body>
+</html>
