@@ -8,30 +8,27 @@ class Twitter:
     'secret': 'L2vQUhtEHJBWY2qMDqRyYEcqnNGS7wYoY5duTYvxE'
   }
 
-  def oauth(self):
+  def request_token(self):
     auth = tweepy.OAuthHandler(self.consumer["key"],
                                self.consumer["secret"])
     try:
       auth_url = auth.get_authorization_url()
     except tweepy.TweepError, e:
       print e
-    session.set('request_token', (auth.request_token.key, auth.request_token.secret)
-    request_token.put()
-    redirect(auth_url)
+    request_token = [auth.request_token.key, auth.request_token.secret]
+    return [auth_url, request_token]
 
-  def oauth_cb(self):
-    verifier = request.GET.get('oauth_verifier')
+  def access_token(self, _vars, session):
+    verifier = _vars["oauth_verifier"]
     auth = tweepy.OAuthHandler(self.consumer["key"],
                                self.consumer["secret"])
-    token = session.get('request_token')
-    session.delete('request_token')
-    auth.set_request_token(token[0], token[1])
+    auth.set_request_token(session.request_token[0], session.request_token[1])
 
     try:
-      auth.get_access_token(verifier)
-    except tweepy.TweepErroor, e:
+      access_token = auth.get_access_token(verifier)
+    except tweepy.TweepError, e:
       print e
+      return False
 
-    self.api = tweepy.API(auth)
-
+    return [access_token, auth]
 
